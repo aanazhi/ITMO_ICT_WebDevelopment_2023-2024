@@ -77,24 +77,30 @@ class MyHTTPServer:
 
         return HTTPRequest(method, path.split("?")[0], headers, params)
 
-    def get_request(self, req):
+    def get_request(self, req):  # метод get_request для обработки GET-запроса от клиента
         if req.path == '/':
-            response_body = '<html><body><h1>List of subjects</h1><ul>{}</ul></body></html>'
-            items = ''.join('<li>{} - {}</li>'.format(subject, grade) for subject, grade in zip(self.subjects, self.grades))
-            print(self.subjects)
+            response_body = '<html><body><h1>List of subjects</h1><ul>{}</ul></body></html>'  # если путь запроса корневой, формируем ответ со списком предметов и оценок
+            grouped_grades = {}  # создаем словарь для группировки оценок по предметам
+            for subject, grade in zip(self.subjects, self.grades):  # проходим по списку предметов и оценок
+                if subject in grouped_grades:  # если предмет уже есть в словаре, добавляем оценку к списку оценок для этого предмета
+                    grouped_grades[subject].append(grade)
+                else:  # если предмета нет в словаре, создаем новую запись с ключом - названием предмета и значением - списком оценок
+                    grouped_grades[subject] = [grade]
+            items = ''.join(
+                '<li>{} - {}</li>'.format(subject, str(grouped_grades[subject])) for subject in
+                grouped_grades)  # формируем строку с элементами списка в формате <li>название предмета - список оценок</li>
             response_body = response_body.format(items)
             return self.make_response(200, 'OK', response_body)
-        else:
+        else:  # если путь запроса не корневой, формируем ответ с ошибкой
             return self.make_response(404, 'Not Found', 'Page not found')
 
-    def post_request(self, req):
-        if req.path == '/record':
+    def post_request(self, req):  # метод post_request для обработки POST-запроса от клиента
+        if req.path == '/record':   # если путь запроса /record, сохраняем предмет и оценку в соответствующие списки
             self.grades.append(req.params.get("grade"))
             self.subjects.append(req.params.get("subject"))
-            print(self.subjects)
-            return self.make_response(200, 'OK', 'Record saved')
+            return self.make_response(200, 'OK', 'Record saved')  # формируем ответ об успешном сохранении записи
         else:
-            return self.make_response(404, 'Not Found', 'Page not found')
+            return self.make_response(404, 'Not Found','Page not found')
 
     def make_response(self, status_code, status_text, body):
         response = f"HTTP/1.1 {status_code} {status_text}\r\n"

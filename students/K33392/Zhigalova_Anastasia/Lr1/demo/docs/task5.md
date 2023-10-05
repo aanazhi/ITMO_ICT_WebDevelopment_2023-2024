@@ -90,17 +90,24 @@ class MyHTTPServer: #класс MyHTTPServer для создания веб-се
 
         return HTTPRequest(method, path.split("?")[0], headers, params)   #возвращаем объект HTTPRequest с методом, путем, заголовками и параметрами запроса
 
-    def get_request(self, req):  #метод handle_get_request для обработки GET-запроса от клиента
+    def get_request(self, req):  # метод get_request для обработки GET-запроса от клиента
         if req.path == '/':
-            response_body = '<html><body><h1>List of subjects</h1><ul>{}</ul></body></html>' #если путь запроса корневой, формируем ответ со списком предметов и оценок
-            items = ''.join('<li>{} - {}</li>'.format(subject, grade) for subject, grade in zip(self.subjects, self.grades))
-            print(self.subjects)
+            response_body = '<html><body><h1>List of subjects</h1><ul>{}</ul></body></html>'  # если путь запроса корневой, формируем ответ со списком предметов и оценок
+            grouped_grades = {}  # создаем словарь для группировки оценок по предметам
+            for subject, grade in zip(self.subjects, self.grades):  # проходим по списку предметов и оценок
+                if subject in grouped_grades:  # если предмет уже есть в словаре, добавляем оценку к списку оценок для этого предмета
+                    grouped_grades[subject].append(grade)
+                else:  # если предмета нет в словаре, создаем новую запись с ключом - названием предмета и значением - списком оценок
+                    grouped_grades[subject] = [grade]
+            items = ''.join(
+                '<li>{} - {}</li>'.format(subject, str(grouped_grades[subject])) for subject in
+                grouped_grades)  # формируем строку с элементами списка в формате <li>название предмета - список оценок</li>
             response_body = response_body.format(items)
             return self.make_response(200, 'OK', response_body)
-        else: #если путь запроса не корневой, формируем ответ с ошибкой
+        else:  # если путь запроса не корневой, формируем ответ с ошибкой
             return self.make_response(404, 'Not Found', 'Page not found')
 
-    def post_request(self, req):  # метод handle_post_request для обработки POST-запроса от клиента
+    def post_request(self, req):  # метод post_request для обработки POST-запроса от клиента
         if req.path == '/record':  #если путь запроса /record, сохраняем предмет и оценку в соответствующие списки
             self.grades.append(req.params.get("grade"))
             self.subjects.append(req.params.get("subject"))
@@ -109,7 +116,7 @@ class MyHTTPServer: #класс MyHTTPServer для создания веб-се
         else:
             return self.make_response(404, 'Not Found', 'Page not found')  #если путь запроса не /record, формируем ответ с ошибкой
 
-    def make_response(self, status_code, status_text, body): #метод create_response для формирования ответа на запрос
+    def make_response(self, status_code, status_text, body): #метод make_response для формирования ответа на запрос
         response = f"HTTP/1.1 {status_code} {status_text}\r\n"
         response += f"Server: {self._server_name}\r\n"
         response += "Content-Type: text/html\r\n"
@@ -159,6 +166,3 @@ if __name__ == '__main__':
 ![Пример задания 5](images/task5.png)
 ![Пример задания 5](images/task51.png)
 ![Пример задания 5](images/task52.png)
-![Пример задания 5](images/task53.png)
-![Пример задания 5](images/task54.png)
-![Пример задания 5](images/task55.png)
