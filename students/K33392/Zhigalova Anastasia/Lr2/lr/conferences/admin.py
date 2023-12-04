@@ -29,7 +29,7 @@ class PresentationAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('conference', 'author', 'rating', 'comment_date')
-    search_fields = ('conference__title', 'author__username', 'text')
+    list_display = ( 'author', 'rating', 'comment_date')
+    search_fields = ('author__username', 'text')
     list_filter = ('rating', 'comment_date')
     ordering = ('comment_date', 'rating')

@@ -22,13 +22,10 @@ class RegistrationForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['conference', 'text', 'rating']
+        fields = [ 'text', 'rating']
         widgets = {
             'text': forms.Textarea(attrs={'cols': 40, 'rows': 5}),
             'rating': forms.Select(choices=Review._meta.get_field('rating').choices),
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['conference'].queryset = Conference.objects.all()
-        self.fields['conference'].label_from_instance = lambda obj: f"{obj.title} - {obj.start_date} to {obj.end_date}"
+    
