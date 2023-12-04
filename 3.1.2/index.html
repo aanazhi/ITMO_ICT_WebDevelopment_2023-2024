@@ -84,6 +84,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#2_1" class="nav-link">Практическое задание 2</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -93,6 +97,7 @@
 
 <h1 id="31">Практическая работа 3.1</h1>
 <h2 id="2">Практическое задание 2</h2>
+<h2 id="2_1">Практическое задание 2</h2>
 <p>Для вывода всех всех автомобилей марки <code>Toyota</code> воспользуемся методом <code>car.objects.filter</code>, передав в качестве аргумента <code>brand="Toyota"</code></p>
 <pre><code class="language-python">toyota_cars = car.objects.filter(brand=&quot;Toyota&quot;)
 for toyota_car in toyota_cars:
@@ -112,10 +117,25 @@ print(f&quot;User: {random_user.username} - {random_user.name} {random_user.surn
 print(f&quot;Driver's License: {driver_license.id_number} - Type: {driver_license.type} - Date of Issue: {driver_license.date_issue}&quot;)
 
 </code></pre>
-<p>Для поиска всех машин красного цвета воспользуемся методом <code>car.objects.filter</code>, передав в качестве аргумента <code>color="Red"</code></p>
-<pre><code class="language-python">red_cars = car.objects.filter(color=&quot;Red&quot;)
-for red_car in red_cars:
-    print(red_car.state_number, red_car.brand, red_car.model, red_car.color)
+<p>Для поиска владельцев красных машин добавим поле <code>cars</code> в модель <code>carOwner</code></p>
+<pre><code class="language-python">class carOwner(models.Model):
+    ...
+    cars = models.ManyToManyField(&quot;car&quot;, through=&quot;possession&quot;, related_name=&quot;cars&quot;)
+</code></pre>
+<p>Затем получим всех владельцев при помощи метода <code>carOwner.objects.filter</code></p>
+<pre><code class="language-python">car_owners = carOwner.objects.filter(cars__color__in=[&quot;Red&quot;])
+for owner in car_owners:
+    print(owner.username, owner.name, owner.surname, owner.date_Birth, owner.passport, owner.address, owner.nationality)
+    for c in owner.cars.all():
+        print(c.state_number, c.color)
+</code></pre>
+<p>Для поиска водителей, которые владеют автомобилем начиная с 2023 года воспользуемся методом <code>carOwner.objects.filter</code></p>
+<pre><code class="language-python">owners_with_cars_from_year = carOwner.objects.filter(
+    possession__date_start__year=2023
+).distinct()
+
+for owner in owners_with_cars_from_year:
+  print(f&quot;User: {owner}&quot;)
 </code></pre></div>
             </div>
         </div>
