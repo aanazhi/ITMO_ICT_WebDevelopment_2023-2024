@@ -113,52 +113,91 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="_1">Регистрация пользователя</h1>
-<p>URL: /auth/users/</p>
-<p>Method: POST</p>
-<p>Auth required: Нет</p>
-<p>Permissions required: Нет</p>
-<p>Data constraints:</p>
-<pre><code>"username": "[string, required]",
-"email": "[string, required]",
-"password": "[string, required]"
-</code></pre>
-<p>Success Responses:</p>
-<p>Code: 201 CREATED</p>
-<p>Content:</p>
-<pre><code>"id": "[integer]",
-"username": "[string]",
-"email": "[string]"
+<pre><code>URL: /auth/users/login/
+
+Method: POST
+
+Auth required: Нет
+
+Permissions required: Нет
+
+Data constraints:
+
+
+    &quot;username&quot;: &quot;[string, required]&quot;,
+    &quot;email&quot;: &quot;[string, required]&quot;,
+    &quot;password&quot;: &quot;[string, required]&quot;
+
+
+Success Responses:
+
+Code: 201 CREATED
+
+Content:
+
+
+    &quot;id&quot;: &quot;[integer]&quot;,
+    &quot;username&quot;: &quot;[string]&quot;,
+    &quot;email&quot;: &quot;[string]&quot;
+
 </code></pre>
 <h1 id="_2">Авторизация пользователя</h1>
-<p>URL: /auth/login/</p>
-<p>Method: POST</p>
-<p>Auth required: Нет</p>
-<p>Permissions required: Нет</p>
-<p>Data constraints:</p>
-<pre><code>"username": "[string, required]",
-"password": "[string, required]"
-</code></pre>
-<p>Success Responses:</p>
-<p>Code: 200 OK</p>
-<p>Content:</p>
-<pre><code>"token": "[string]"
+<pre><code>
+URL: /auth/users/
+
+Method: POST
+
+Auth required: Нет
+
+Permissions required: Нет
+
+Data constraints:
+
+
+    &quot;username&quot;: &quot;[string, required]&quot;,
+    &quot;password&quot;: &quot;[string, required]&quot;
+
+
+Success Responses:
+
+Code: 200 OK
+
+Content:
+
+
+    &quot;token&quot;: &quot;[string]&quot;
+
 </code></pre>
 <h1 id="_3">Изменение учетных данных пользователя</h1>
-<p>URL: /auth/user/<int:pk>/</p>
-<p>Method: PUT</p>
-<p>Auth required: Да</p>
-<p>Permissions required: IsAuthenticated</p>
-<p>Data constraints:</p>
-<pre><code>"username": "[string, optional]",
-"email": "[string, optional]",
-"password": "[string, optional]"
-</code></pre>
-<p>Success Responses:</p>
-<p>Code: 200 OK</p>
-<p>Content:</p>
-<pre><code>"id": "[integer]",
-"username": "[string]",
-"email": "[string]"
+<pre><code>
+URL: /auth/user/&lt;int:pk&gt;/
+
+Method: PUT
+
+Auth required: Да
+
+Permissions required: IsAuthenticated
+
+Data constraints:
+
+
+    &quot;username&quot;: &quot;[string, optional]&quot;,
+    &quot;email&quot;: &quot;[string, optional]&quot;,
+    &quot;password&quot;: &quot;[string, optional]&quot;
+
+
+Success Responses:
+
+Code: 200 OK
+
+Content:
+
+
+    &quot;id&quot;: &quot;[integer]&quot;,
+    &quot;username&quot;: &quot;[string]&quot;,
+    &quot;email&quot;: &quot;[string]&quot;
+
+
 </code></pre></div>
             </div>
         </div>
