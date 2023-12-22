@@ -1,5 +1,7 @@
 # Регистрация пользователя
-URL: /auth/users/
+
+``` 
+URL: /auth/users/login/
 
 Method: POST
 
@@ -26,10 +28,14 @@ Content:
     "username": "[string]",
     "email": "[string]"
 
+``` 
+
 
 # Авторизация пользователя
 
-URL: /auth/login/
+``` 
+
+URL: /auth/users/
 
 Method: POST
 
@@ -53,8 +59,12 @@ Content:
 
     "token": "[string]"
 
+``` 
+
 
 # Изменение учетных данных пользователя
+
+``` 
 
 URL: /auth/user/<int:pk>/
 
@@ -82,3 +92,6 @@ Content:
     "id": "[integer]",
     "username": "[string]",
     "email": "[string]"
+
+
+``` 
